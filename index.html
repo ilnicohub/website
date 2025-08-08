@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invito alla mia festa di laurea 🎓</title>
+    
+    <!-- Meta tags per WhatsApp e social -->
+    <meta property="og:title" content="Invito alla mia festa di laurea 🎓">
+    <meta property="og:description" content="Conferma la tua presenza alla mia festa 🎉. Tutti i dettagli qui!">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://via.placeholder.com/400x400/FFD700/000000?text=🎓">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Invito alla mia festa di laurea 🎓">
+    <meta name="twitter:description" content="Conferma la tua presenza alla mia festa 🎉. Tutti i dettagli qui!">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="particles-bg"></canvas>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <span class="graduation-emoji">🎓</span>
+            <h1>Laurea Niccolò</h1>
+            <p class="subtitle">La tua presenza renderà questo giorno ancora più speciale</p>
+        </div>
+
+        <!-- Contenuto principale -->
+        <div class="content">
+            <div class="invitation-text">
+                <h2>🎉 Ho il piacere di invitarti alla mia festa di laurea! 🎉</h2>
+                
+                <div class="event-details">
+                    <!-- PERSONALIZZA QUI I DETTAGLI DELL'EVENTO -->
+                    <p><span class="emoji">📍</span><strong>Dove:</strong>Villa Rebeschini <a href="https://maps.app.goo.gl/HmQGcnAQs34tusxr7"><b>Maps</b></a></p>
+                    <p><span class="emoji">📅</span><strong>Quando:</strong>04/10/2025</p>
+                    <p><span class="emoji">🕒</span><strong>Orario:</strong>18:00</p>
+                </div>
+
+                <div class="celebration-text">
+                    🥳 Sarà una serata indimenticabile, e la tua presenza è importante per me! 🥳
+                </div>
+            </div>
+
+            <!-- Form di conferma -->
+            <div class="form-section">
+                <h3>✨ Conferma la tua presenza ✨</h3>
+                <form id="confirmationForm">
+                    <div class="form-group">
+                        <label for="nome">Nome <span class="required">*</span></label>
+                        <input type="text" id="nome" name="nome" required placeholder="Il tuo nome">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="note">Totale persone</label>
+                        <select id="note" name="note">
+                            <option value="" disabled selected>Seleziona il numero di persone</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="note2">Note (intolleranze, ecc.)</label>
+                        <textarea id="note2" name="note2" placeholder="Es: Sono vegetariano, no lattosio, ecc..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        Conferma la tua presenza 🎉
+                        <span class="loading" id="loading"></span>
+                    </button>
+                </form>
+                
+                <div class="success-message" id="successMessage">
+                    🎉 Grazie per aver confermato, a presto! 🎉
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Non vedo l'ora di festeggiare insieme a te! 🎓✨</p>
+        </div>
+    </div>
+
+    <script>
+// === CONFIGURAZIONE === 
+// INSERISCI QUI L'URL DEL TUO GOOGLE APPS SCRIPT
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwkiUtxSS-sNLvjWeqnHZmvXPVcxM9_Htu2tHkh1PTa-uMgW-zvlIOXJ3lgB4Wz9A57rQ/exec';
+
+// === GESTIONE FORM ===
+document.getElementById('confirmationForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const submitBtn = document.getElementById('submitBtn');
+    const loading = document.getElementById('loading');
+    const successMessage = document.getElementById('successMessage');
+    
+    // Disabilita il pulsante e mostra loading
+    submitBtn.disabled = true;
+    loading.style.display = 'inline-block';
+    submitBtn.innerHTML = 'Invio in corso... <span class="loading"></span>';
+    
+    // Raccoglie i dati del form (aggiornato per includere note2)
+    const formData = new FormData(form);
+    const data = {
+        nome: formData.get('nome'),
+        note: formData.get('note') || 'Non specificato',      // Numero persone
+        note2: formData.get('note2') || 'Nessuna nota',       // Note aggiuntive
+        timestamp: new Date().toLocaleString('it-IT'),
+        userAgent: navigator.userAgent
+    };
+    
+    try {
+        // Invia con FormData
+        const formDataToSend = new FormData();
+        formDataToSend.append('nome', data.nome);
+        formDataToSend.append('note', data.note);
+        formDataToSend.append('note2', data.note2);
+        formDataToSend.append('timestamp', data.timestamp);
+        formDataToSend.append('userAgent', data.userAgent);
+        
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            body: formDataToSend
+        });
+        
+        // Mostra messaggio di successo
+        form.style.display = 'none';
+        successMessage.classList.add('show');
+        
+        // Log per debug
+        console.log('Dati inviati:', data);
+        console.log('Response status:', response.status);
+        
+        // Prova a leggere la risposta (se possibile)
+        try {
+            const responseText = await response.text();
+            console.log('Risposta dal server:', responseText);
+        } catch (readError) {
+            console.log('Impossibile leggere la risposta (normale con CORS)');
+        }
+        
+    } catch (error) {
+        console.error('Errore nell\'invio:', error);
+        alert('Si è verificato un errore nell\'invio. Riprova più tardi.');
+        
+        // Ripristina il pulsante
+        submitBtn.disabled = false;
+        loading.style.display = 'none';
+        submitBtn.innerHTML = 'Conferma la tua presenza 🎉';
+    }
+});
+
+// === ANIMAZIONI AL CARICAMENTO ===
+window.addEventListener('load', function() {
+    const elements = document.querySelectorAll('.event-details, .celebration-text, .form-section');
+    elements.forEach((el, index) => {
+        el.style.animationDelay = `${index * 0.2}s`;
+        el.style.animation = 'slideInUp 0.6s ease-out forwards';
+    });
+});
+
+// === VALIDAZIONE REAL-TIME ===
+document.getElementById('nome').addEventListener('input', function(e) {
+    const submitBtn = document.getElementById('submitBtn');
+    if (e.target.value.trim().length > 0) {
+        submitBtn.style.opacity = '1';
+    } else {
+        submitBtn.style.opacity = '0.7';
+    }
+});
+
+// === AUTO-RESIZE TEXTAREA ===
+document.getElementById('note2').addEventListener('input', function(e) {
+    e.target.style.height = 'auto';
+    e.target.style.height = e.target.scrollHeight + 'px';
+});
+    </script>
+    <script>
+        // === GESTIONE TEXTAREA AUTO-RESIZE ===
+        document.getElementById('note').addEventListener('input', function(e) {
+            e.target.style.height = 'auto';
+            e.target.style.height = e.target.scrollHeight + 'px';
+        });
+    </script>
+    <script>
+        // === PARTICELLE ANIMATE SULLO SFONDO ===
+        const canvas = document.getElementById('particles-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        function createParticles(num) {
+            particles = [];
+            for (let i = 0; i < num; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: 1.5 + Math.random() * 2.5,
+                    dx: (Math.random() - 0.5) * 0.7,
+                    dy: (Math.random() - 0.5) * 0.7,
+                    alpha: 0.3 + Math.random() * 0.5
+                });
+            }
+        }
+        createParticles(70);
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let p of particles) {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(30,144,255,${p.alpha})`;
+                ctx.shadowColor = "#1E90FF";
+                ctx.shadowBlur = 8;
+                ctx.fill();
+                ctx.closePath();
+
+                p.x += p.dx;
+                p.y += p.dy;
+
+                // Rimbalzo ai bordi
+                if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    </script>
+</body>
+</html>

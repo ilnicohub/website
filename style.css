@@ -1,0 +1,370 @@
+        /* === CONFIGURAZIONE COLORI (facile da modificare) === */
+        :root {
+            --primary-color: #1E90FF; /* Blu calcio */
+            --secondary-color: #003366; /* Blu scuro */
+            --accent-color: #FFFFFF; /* Bianco */
+            --background-color: #FFFFFF; /* Bianco */
+            --text-color: #333333;
+            --success-color: #28a745;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --football-green: #4CAF50; /* Verde campo */
+        }
+
+        /* === RESET E BASE === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* background: ...rimuovi la vecchia immagine... */
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            animation: fadeIn 1s ease-in;
+            position: relative;
+            background: linear-gradient(rgba(30, 144, 255, 0.85), rgba(0, 51, 102, 0.85));
+        }
+
+        #particles-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* Overlay pattern per effetto calcio */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.05) 1px, transparent 1px),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 80px 80px, 120px 120px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* === ANIMAZIONI === */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* === CONTAINER PRINCIPALE === */
+        .container {
+            max-width: 600px; /* era 500px */
+            margin: 0 auto;
+            background: var(--background-color);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            overflow: hidden;
+            animation: slideInUp 0.8s ease-out;
+        }
+        
+        /* Più spazio interno alle info evento */
+        .event-details {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(30, 144, 255, 0.1));
+            border-radius: 15px;
+            padding: 35px 40px; /* aumentato padding orizzontale */
+            margin: 25px 0;
+            border-left: 5px solid var(--primary-color);
+            border: 2px solid rgba(30, 144, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        /* === HEADER === */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 50px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .graduation-emoji {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-weight: 400;
+            margin-top: 15px;
+        }
+
+        /* === CONTENUTO === */
+        .content {
+            padding: 40px 30px;
+        }
+
+        .invitation-text {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .invitation-text h2 {
+            font-size: 1.4rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .event-details {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(30, 144, 255, 0.1));
+            border-radius: 15px;
+            padding: 35px 40px; /* aumentato padding orizzontale */
+            margin: 25px 0;
+            border-left: 5px solid var(--primary-color);
+            border: 2px solid rgba(30, 144, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .event-details p {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .event-details p:last-child {
+            margin-bottom: 0;
+        }
+
+        .emoji {
+            font-size: 1.3rem;
+            min-width: 30px;
+        }
+
+        .celebration-text {
+            background: linear-gradient(135deg, var(--primary-color), #00BFFF);
+            color: var(--accent-color);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin: 30px 0;
+            box-shadow: 0 4px 15px rgba(30, 144, 255, 0.3);
+        }
+
+        /* === FORM === */
+        .form-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border: 1px solid rgba(30, 144, 255, 0.2);
+        }
+
+        .form-section h3 {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .required {
+            color: var(--secondary-color);
+        }
+
+        .form-group input,
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* === PULSANTE === */
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color), #00BFFF);
+            color: var(--accent-color);
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(30, 144, 255, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(30, 144, 255, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* === MESSAGGIO DI SUCCESSO === */
+        .success-message {
+            display: none;
+            background: var(--success-color);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 20px;
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* === FOOTER === */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* === LOADING SPINNER === */
+        .loading {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .form-section {
+                padding: 20px;
+            }
+            
+            .graduation-emoji {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .event-details p {
+                font-size: 1rem;
+            }
+            
+            .submit-btn {
+                font-size: 1.1rem;
+                padding: 16px;
+            }
+        }
